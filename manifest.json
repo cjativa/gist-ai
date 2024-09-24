@@ -1,0 +1,10 @@
+{
+    "manifest_version": 3,
+    "name": "Gist AI",
+    "description": "Browser extension for summarizing information quickly",
+    "version": "1.0",
+    "action": {
+        "default_popup": "./index.html",
+        "default_icon": "gist.png"
+    }
+}
