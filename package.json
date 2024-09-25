@@ -18,10 +18,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "npm run clean && INLINE_RUNTIME_CHUNK=false craco build",
     "postbuild": "cp -r build output; cp gist.png manifest.json output",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "clean": "rm -rf output build"
   },
   "eslintConfig": {
     "extends": [
@@ -42,6 +43,19 @@
     ]
   },
   "devDependencies": {
-    "styled-components": "^6.1.13"
+    "@craco/craco": "^7.1.0",
+    "@eslint/js": "^9.11.1",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "chrome-types": "^0.1.306",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.36.1",
+    "globals": "^15.9.0",
+    "prettier": "^3.3.3",
+    "styled-components": "^6.1.13",
+    "typescript-eslint": "^8.7.0"
   }
 }

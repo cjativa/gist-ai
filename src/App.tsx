@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  console.log('Hello');
   return (
     <div className="container">
       <div className="App">
@@ -21,7 +22,7 @@ function App() {
           </a>
         </header>
       </div>
-    </div >
+    </div>
   );
 }
 
