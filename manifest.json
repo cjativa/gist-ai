@@ -10,5 +10,10 @@
   "permissions": ["contextMenus"],
   "background": {
     "service_worker": "./static/js/content.js"
+  },
+  "icons": {
+    "16": "gist.png",
+    "48": "gist.png",
+    "128": "gist.png"
   }
 }
