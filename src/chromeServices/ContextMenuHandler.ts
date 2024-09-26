@@ -1,5 +1,7 @@
+import { IntentTypes } from '../types';
+
 type ContextTypeItem = {
-  id: string;
+  id: IntentTypes;
   type: chrome.contextMenus.ContextType;
   handler: (information: chrome.contextMenus.OnClickData) => void;
   label: string;
@@ -10,26 +12,26 @@ export class ContextMenuHandler {
   public static contextTypes: {
     [id: string]: ContextTypeItem;
   } = {
-    summarizer: {
-      id: 'summarizer',
+    [IntentTypes.summarizer]: {
+      id: IntentTypes.summarizer,
       type: 'selection',
       handler: ContextMenuHandler.handleContextMenuItemClick,
       label: 'Summarize it',
     },
-    explainer: {
-      id: 'explainer',
+    [IntentTypes.explainer]: {
+      id: IntentTypes.explainer,
       type: 'selection',
       handler: ContextMenuHandler.handleContextMenuItemClick,
       label: "Can you explain this to me like I'm 5?",
     },
-    actioner: {
-      id: 'actioner',
+    [IntentTypes.actioner]: {
+      id: IntentTypes.actioner,
       type: 'selection',
       handler: ContextMenuHandler.handleContextMenuItemClick,
       label: 'Build me an action plan based off this',
     },
-    rephraser: {
-      id: 'rephraser',
+    [IntentTypes.rephraser]: {
+      id: IntentTypes.rephraser,
       type: 'selection',
       handler: ContextMenuHandler.handleContextMenuItemClick,
       label: 'Rephrase this for me in a way I might say this',
@@ -68,14 +70,9 @@ export class ContextMenuHandler {
     information: chrome.contextMenus.OnClickData
   ) {
     const currentSelectionContent = information.selectionText || '';
-    const contextItem = ContextMenuHandler.getContextItemForIdentifier(
-      information.menuItemId.toString()
-    );
-
-    console.log(`The payload is
-      Label: ${contextItem.label}
-      Content: ${currentSelectionContent}
-      `);
+    const contextItemId = information.menuItemId.toString();
+    const contextItem =
+      ContextMenuHandler.getContextItemForIdentifier(contextItemId);
   }
 
   /** Type-safe way of retrieving the associated ContextTypeItem for a given identifier
