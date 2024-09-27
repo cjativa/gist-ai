@@ -1,5 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ThemeProvider } from '@mui/material/styles';
+import { MuiTheme } from './Theme';
+
+import '@fontsource/roboto/300.css';
+
 import './index.css';
 import { Application } from './App';
 import reportWebVitals from './reportWebVitals';
@@ -9,7 +14,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Application />
+    <ThemeProvider theme={MuiTheme}>
+      <Application />
+    </ThemeProvider>
   </React.StrictMode>
 );
 
