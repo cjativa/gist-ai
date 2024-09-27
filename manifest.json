@@ -7,9 +7,15 @@
     "default_popup": "./index.html",
     "default_icon": "gist.png"
   },
-  "permissions": ["contextMenus"],
+  "permissions": ["contextMenus", "activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["./static/js/content.js"]
+    }
+  ],
   "background": {
-    "service_worker": "./static/js/content.js"
+    "service_worker": "./static/js/background.js"
   },
   "icons": {
     "16": "gist.png",

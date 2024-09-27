@@ -10,6 +10,7 @@ module.exports = {
             paths.appIndexJs,
           ].filter(Boolean),
           content: './src/chromeServices/ContextMenuHandler.ts',
+          background: './src/chromeServices/BackgroundServiceHandler.ts',
         },
         output: {
           ...webpackConfig.output,
