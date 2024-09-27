@@ -1,4 +1,4 @@
-import { IntentTypes } from '../types';
+import { IntentTypes, IntentMessage } from '../types';
 
 type ContextTypeItem = {
   id: IntentTypes;
@@ -66,13 +66,23 @@ export class ContextMenuHandler {
    * individually as part of `chrome.contextMenus.create` API call due to context script usage
    * @param information - Information about the on-click event for the menu item
    */
-  public static handleContextMenuItemClick(
+  public static async handleContextMenuItemClick(
     information: chrome.contextMenus.OnClickData
   ) {
     const currentSelectionContent = information.selectionText || '';
     const contextItemId = information.menuItemId.toString();
     const contextItem =
       ContextMenuHandler.getContextItemForIdentifier(contextItemId);
+
+    // Build our message object
+    const message: IntentMessage = {
+      intentTypeId: contextItem.id,
+      content: currentSelectionContent,
+    };
+
+    // Send the message over to our extension application in React
+    await chrome.action.openPopup();
+    chrome.runtime.sendMessage('', message);
   }
 
   /** Type-safe way of retrieving the associated ContextTypeItem for a given identifier
@@ -87,15 +97,3 @@ export class ContextMenuHandler {
     return contextItem;
   }
 }
-
-/** Perform generating of our context menu items  */
-chrome.runtime.onInstalled.addListener(
-  ContextMenuHandler.generateContextMenuItems
-);
-
-/** When using a service worker or background script, we can only use the generic
- * `chrome.contextMenus.onClicked.addListener` callback
- */
-chrome.contextMenus.onClicked.addListener(
-  ContextMenuHandler.handleContextMenuItemClick
-);
