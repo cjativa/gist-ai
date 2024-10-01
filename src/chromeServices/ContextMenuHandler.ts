@@ -82,7 +82,7 @@ export class ContextMenuHandler {
 
     // Send the message over to our extension application in React
     await chrome.action.openPopup();
-    chrome.runtime.sendMessage('', message);
+    await chrome.runtime.sendMessage('', message);
   }
 
   /** Type-safe way of retrieving the associated ContextTypeItem for a given identifier

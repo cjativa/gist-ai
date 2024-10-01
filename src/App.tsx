@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 
 import logo from './logo.svg';
-
 import { IntentMessage, IntentTypes } from './types';
 
 const IntentInformationMap: {
@@ -38,20 +37,20 @@ const IntentInformationMap: {
   },
 };
 
-const StyledAppContainer = styled(Box)<BoxProps>(({ theme }) => ({
-  width: '40em',
-  height: '40em',
+const StyledAppContainer = styled(Box)<BoxProps>(({}) => ({
+  width: '45em',
+  height: '45em',
   padding: '1em',
 }));
 
-const StyledHeader = styled(Box)(({ theme }) => ({
+const StyledHeader = styled(Box)(({}) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
 }));
 
-const StyledIntentContainer = styled(Box)(({ theme }) => ({
+const StyledIntentContainer = styled(Box)(({}) => ({
   marginTop: '.5em',
 
   display: 'flex',
@@ -75,27 +74,26 @@ export function Application() {
 
   const intentInformation = intentId ? IntentInformationMap[intentId] : null;
 
+  function handleMessageFromBackground(
+    message: IntentMessage,
+    sender: chrome.runtime.MessageSender
+  ): boolean {
+    setIntentSource(IntentSources.ContextMenu);
+    setIntentId(message.intentTypeId);
+    setIntentContent(message.content);
+
+    return false;
+  }
+
+  // Configure our listener from our content script to the main application
+  // TODO - Figure out how to move this into `React.useEffect`
+  chrome?.runtime?.onMessage.addListener(handleMessageFromBackground);
+
   /** Set-up the runtime message handler once */
   React.useEffect(() => {
-    // Configure our listener from our content script to the main application
-    if (chrome?.runtime) {
-      chrome.runtime.onMessage.addListener(function handleMessageFromBackground(
-        message: IntentMessage,
-        sender: chrome.runtime.MessageSender
-      ): boolean {
-        setIntentSource(IntentSources.ContextMenu);
-        setIntentId(message.intentTypeId);
-        setIntentContent(message.content);
-
-        return true;
-      });
-    }
-
-    // Otherwise, the extension application was opened directly from the extension
-    // toolbar entrypoint. Let's allow the end-user to add some input text and select their intent
-    else {
-      setIntentSource(IntentSources.ExtensionEntrypoint);
-    }
+    // Clean up the listener when the component unmounts
+    return () =>
+      chrome?.runtime?.onMessage.removeListener(handleMessageFromBackground);
   }, []);
 
   /** Handles the on-click event from our intent buttons */
@@ -109,6 +107,9 @@ export function Application() {
   ) {
     setIntentContent(event.target.value);
   }
+
+  /** Handles executing the API request to the backend for process the input content */
+  function performIntentActionRequest() {}
 
   return (
     <StyledAppContainer>
@@ -160,6 +161,7 @@ export function Application() {
             multiline
             fullWidth
             placeholder={'Enter a bit of content to perform actions on it'}
+            rows={3}
             slotProps={{
               input: {
                 readOnly: false,
