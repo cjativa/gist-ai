@@ -8,12 +8,6 @@
     "default_icon": "gist.png"
   },
   "permissions": ["contextMenus", "activeTab"],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["./static/js/content.js"]
-    }
-  ],
   "background": {
     "service_worker": "./static/js/background.js"
   },

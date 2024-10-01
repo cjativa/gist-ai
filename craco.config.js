@@ -9,7 +9,6 @@ module.exports = {
               require.resolve('react-dev-utils/webpackHotDevClient'),
             paths.appIndexJs,
           ].filter(Boolean),
-          content: './src/chromeServices/ContextMenuHandler.ts',
           background: './src/chromeServices/BackgroundServiceHandler.ts',
         },
         output: {
