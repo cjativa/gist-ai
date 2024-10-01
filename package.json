@@ -24,6 +24,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "npm run clean && INLINE_RUNTIME_CHUNK=false craco build",
+    "build:server": "tsc -p server",
     "postbuild": "cp -r build output; cp gist.png manifest.json output",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

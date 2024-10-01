@@ -1,0 +1,1 @@
+export { IntentController } from './intentController';
