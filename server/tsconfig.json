@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "module": "commonjs",
+    "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -9,12 +10,11 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
-    "outDir": "../dist",
+    "outDir": "../dist/server",
     "rootDir": "./"
   },
   "include": ["**/*.ts"]

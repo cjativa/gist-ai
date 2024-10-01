@@ -22,9 +22,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3004 react-scripts start",
     "build": "npm run clean && INLINE_RUNTIME_CHUNK=false craco build",
     "build:server": "tsc -p server",
+    "watch:server": "tsc -w -p server",
     "postbuild": "cp -r build output; cp gist.png manifest.json output",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -60,7 +61,9 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.36.1",
     "globals": "^15.9.0",
+    "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "typescript-eslint": "^8.7.0"
-  }
+  },
+  "proxy": "http://localhost:4004"
 }
