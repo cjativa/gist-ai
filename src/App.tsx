@@ -52,7 +52,7 @@ const StyledHeader = styled(Box)(({ theme }) => ({
 }));
 
 const StyledIntentContainer = styled(Box)(({ theme }) => ({
-  marginTop: '1em',
+  marginTop: '.5em',
 
   display: 'flex',
   flexDirection: 'column',
@@ -66,35 +66,29 @@ enum IntentSources {
   ExtensionEntrypoint = 'ExtensionEntrypoint',
 }
 
-const RenderForMessageIntent = () => {};
-
-const RenderForPopupIntent = () => {};
-
 export function Application() {
-  const [intentConent, setIntentContent] = React.useState('');
+  const [intentContent, setIntentContent] = React.useState<string>('');
   const [intentId, setIntentId] = React.useState<null | IntentTypes>(null);
-  const [intentSource, setIntentSource] = React.useState<null | IntentSources>(
-    null
+  const [intentSource, setIntentSource] = React.useState<IntentSources>(
+    IntentSources.ExtensionEntrypoint
   );
 
   const intentInformation = intentId ? IntentInformationMap[intentId] : null;
-
-  function handleMessageFromBackground(
-    message: IntentMessage,
-    sender: chrome.runtime.MessageSender
-  ): boolean {
-    setIntentSource(IntentSources.ContextMenu);
-    setIntentId(message.intentTypeId);
-    setIntentContent(message.content);
-
-    return true;
-  }
 
   /** Set-up the runtime message handler once */
   React.useEffect(() => {
     // Configure our listener from our content script to the main application
     if (chrome?.runtime) {
-      chrome.runtime.onMessage.addListener(handleMessageFromBackground);
+      chrome.runtime.onMessage.addListener(function handleMessageFromBackground(
+        message: IntentMessage,
+        sender: chrome.runtime.MessageSender
+      ): boolean {
+        setIntentSource(IntentSources.ContextMenu);
+        setIntentId(message.intentTypeId);
+        setIntentContent(message.content);
+
+        return true;
+      });
     }
 
     // Otherwise, the extension application was opened directly from the extension
@@ -103,6 +97,18 @@ export function Application() {
       setIntentSource(IntentSources.ExtensionEntrypoint);
     }
   }, []);
+
+  /** Handles the on-click event from our intent buttons */
+  function onHandleIntentButtonClick(intentId: IntentTypes) {
+    setIntentId(intentId);
+  }
+
+  /** Handles updating state with the input typed into the content text field */
+  function onHandleContentInputChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
+    setIntentContent(event.target.value);
+  }
 
   return (
     <StyledAppContainer>
@@ -117,62 +123,51 @@ export function Application() {
           </Typography>
         </StyledHeader>
 
-        {/** When the intent source is the extension entrypoint itself, we'll render the input field
-         * and the button group for the end-user to make a selection of intent
-         */}
-        {intentSource === IntentSources.ExtensionEntrypoint ? (
-          <StyledIntentContainer>
-            <Typography variant="body2">
-              Choose one of the actions below
-            </Typography>
+        <StyledIntentContainer>
+          {/** When the intent source is the extension entrypoint itself, we'll render the input field
+           * and the button group for the end-user to make a selection of intent
+           */}
+          {intentSource === IntentSources.ExtensionEntrypoint ? (
+            <StyledIntentContainer>
+              <Typography variant="body2">
+                Choose one of the actions below
+              </Typography>
 
-            <ButtonGroup variant="contained" aria-label="Gist action buttons">
-              {Object.entries(IntentInformationMap).map(
-                ([intentId, intentItem]) => {
-                  return (
-                    <Button key={intentId}>
-                      {intentItem.actionButtonLabel}
-                    </Button>
-                  );
-                }
-              )}
-            </ButtonGroup>
+              {/** Render our available intent actions */}
+              <ButtonGroup variant="contained" aria-label="Gist action buttons">
+                {Object.entries(IntentInformationMap).map(
+                  ([intentId, intentItem]) => {
+                    return (
+                      <Button
+                        key={intentId}
+                        onClick={() =>
+                          onHandleIntentButtonClick(intentId as IntentTypes)
+                        }
+                      >
+                        {intentItem.actionButtonLabel}
+                      </Button>
+                    );
+                  }
+                )}
+              </ButtonGroup>
+            </StyledIntentContainer>
+          ) : null}
 
-            <TextField
-              id="outlined-read-only-input"
-              label="Content"
-              value={intentConent}
-              multiline
-              fullWidth
-              slotProps={{
-                input: {
-                  readOnly: true,
-                },
-              }}
-            />
-          </StyledIntentContainer>
-        ) : null}
-
-        {/** Once we have a desired intent and intent content, we can render the below */}
-        {intentInformation ? (
-          <StyledIntentContainer>
-            <p>Current Intent</p>
-            <p>{intentInformation.actionOperationLabel}</p>
-
-            <p>Content being used</p>
-            <TextField
-              id="outlined-read-only-input"
-              label="Content"
-              value={intentConent}
-              multiline
-              slotProps={{
-                input: {
-                  readOnly: true,
-                },
-              }}
-            />
-          </StyledIntentContainer>
-        ) : null}
+          <TextField
+            id="outlined-read-only-input"
+            label="Content"
+            value={intentContent}
+            multiline
+            fullWidth
+            placeholder={'Enter a bit of content to perform actions on it'}
+            slotProps={{
+              input: {
+                readOnly: false,
+              },
+            }}
+            onChange={onHandleContentInputChange}
+          />
+        </StyledIntentContainer>
       </div>
     </StyledAppContainer>
   );
