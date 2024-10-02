@@ -7,28 +7,28 @@ export class IntentController {
     request: express.Request,
     response: express.Response
   ) {
-    return response.status(400).json(`Generic response`);
+    return response.status(200).json(`Generic response`);
   }
 
   public static async handleExplain(
     request: express.Request,
     response: express.Response
   ) {
-    return response.status(400).json(`Generic response`);
+    return response.status(200).json(`Generic response`);
   }
 
   public static async handleRephrase(
     request: express.Request,
     response: express.Response
   ) {
-    return response.status(400).json(`Generic response`);
+    return response.status(200).json(`Generic response`);
   }
 
   public static async handleActionPlan(
     request: express.Request,
     response: express.Response
   ) {
-    return response.status(400).json(`Generic response`);
+    return response.status(200).json(`Generic response`);
   }
 
   public static async retrieveStories(

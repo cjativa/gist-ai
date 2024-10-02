@@ -6,6 +6,7 @@ import {
   Typography,
   Button,
   ButtonGroup,
+  CircularProgress,
   type BoxProps,
 } from '@mui/material';
 
@@ -40,7 +41,7 @@ const IntentInformationMap: {
 
 const StyledAppContainer = styled(Box)<BoxProps>(({}) => ({
   width: '45em',
-  height: '45em',
+  minHeight: '45em',
   padding: '1em',
 }));
 
@@ -60,6 +61,21 @@ const StyledIntentContainer = styled(Box)(({}) => ({
   alignItems: 'center',
   rowGap: '1em',
 }));
+const StyledLoadingCircle = styled(CircularProgress)(({}) => ({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  marginTop: '-12px',
+  marginLeft: '-12px',
+
+  height: '24px',
+  width: '24px',
+}));
+const StyledContentContainer = styled(Box)(({}) => ({
+  display: 'flex',
+  position: 'relative',
+  width: '100%',
+}));
 
 enum IntentSources {
   ContextMenu = 'ContextMenu',
@@ -72,6 +88,8 @@ export function Application() {
   const [intentSource, setIntentSource] = React.useState<IntentSources>(
     IntentSources.ExtensionEntrypoint
   );
+  const [intentInProgress, setIntentInProgress] = React.useState(false);
+  const [intentSuccess, setIntentSuccess] = React.useState(false);
 
   const intentInformation = intentId ? IntentInformationMap[intentId] : null;
 
@@ -100,12 +118,17 @@ export function Application() {
   /** Handles the on-click event from our intent buttons */
   async function onHandleIntentButtonClick(intentId: IntentTypes) {
     setIntentId(intentId);
+    setIntentInProgress(true);
 
     // Perform the desired intent action
     const intentResponse = await ApiService.sendIntentRequest({
       intentTypeId: intentId,
       intentContent,
     });
+
+    setTimeout(() => {
+      setIntentInProgress(false);
+    }, 3000);
   }
 
   /** Handles updating state with the input typed into the content text field */
@@ -158,21 +181,26 @@ export function Application() {
             </StyledIntentContainer>
           ) : null}
 
-          <TextField
-            id="outlined-read-only-input"
-            label="Content"
-            value={intentContent}
-            multiline
-            fullWidth
-            placeholder={'Enter a bit of content to perform actions on it'}
-            minRows={3}
-            slotProps={{
-              input: {
-                readOnly: false,
-              },
-            }}
-            onChange={onHandleContentInputChange}
-          />
+          {/** Text field with the intent content. We'll show a loading animation as the request is in-progress */}
+          <StyledContentContainer>
+            <TextField
+              id="outlined-read-only-input"
+              label="Content"
+              value={intentContent}
+              multiline
+              fullWidth
+              placeholder={'Enter a bit of content to perform actions on it'}
+              minRows={3}
+              slotProps={{
+                input: {
+                  readOnly: intentInProgress,
+                },
+              }}
+              disabled={intentInProgress}
+              onChange={onHandleContentInputChange}
+            />
+            {intentInProgress && <StyledLoadingCircle />}
+          </StyledContentContainer>
         </StyledIntentContainer>
       </div>
     </StyledAppContainer>
