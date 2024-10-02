@@ -1,42 +1,34 @@
 import express from 'express';
 
-import {} from '../services';
+// import {} from '../services';
 
 export class IntentController {
   public static async handleSummarize(
     request: express.Request,
     response: express.Response
   ) {
-    return response
-      .status(400)
-      .json(`No artwork found for provided id ${artworkId}`);
+    return response.status(400).json(`Generic response`);
   }
 
   public static async handleExplain(
     request: express.Request,
     response: express.Response
   ) {
-    return response
-      .status(400)
-      .json(`No artwork found for provided id ${artworkId}`);
+    return response.status(400).json(`Generic response`);
   }
 
   public static async handleRephrase(
     request: express.Request,
     response: express.Response
   ) {
-    return response
-      .status(400)
-      .json(`No artwork found for provided id ${artworkId}`);
+    return response.status(400).json(`Generic response`);
   }
 
   public static async handleActionPlan(
     request: express.Request,
     response: express.Response
   ) {
-    return response
-      .status(400)
-      .json(`No artwork found for provided id ${artworkId}`);
+    return response.status(400).json(`Generic response`);
   }
 
   public static async retrieveStories(
@@ -44,14 +36,8 @@ export class IntentController {
     response: express.Response
   ) {
     const artworkId = request.params.artworkId;
-    const languagePreference = getPreferredLanguage(request);
 
-    const relatedStories = await GraphCMSService.findByObjectId(
-      artworkId,
-      languagePreference
-    );
-
-    return response.status(200).json({ data: relatedStories });
+    return response.status(200).json({ data: [] });
   }
 
   public static async markStoryAsRead(
@@ -60,10 +46,9 @@ export class IntentController {
   ) {
     const artworkId = request.params.artworkId;
     const storyId = request.params.storyId;
-    const sessionId = request.sessionID;
 
     // Look up the bookmark for this artwork for the user
-    const bookmarks = await prisma.bookmarks.findMany({
+    /*  const bookmarks = await prisma.bookmarks.findMany({
       where: {
         image_id: artworkId,
         session_id: sessionId,
@@ -96,6 +81,6 @@ export class IntentController {
         },
         message: 'Entry not found!',
       });
-    }
+    } */
   }
 }

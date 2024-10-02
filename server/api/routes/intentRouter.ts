@@ -4,9 +4,9 @@ import { IntentController } from '../controllers';
 
 const IntentRouter = Router();
 
-IntentRouter.post('/summarize', IntentController.handleSummarize);
-IntentRouter.post('/explain', IntentController.handleExplain);
-IntentRouter.post('/rephrase', IntentController.handleRephrase);
-IntentRouter.post('/actionPlan', IntentController.handleActionPlan);
+IntentRouter.post('/summarizer', IntentController.handleSummarize);
+IntentRouter.post('/explainer', IntentController.handleExplain);
+IntentRouter.post('/rephraser', IntentController.handleRephrase);
+IntentRouter.post('/actioner', IntentController.handleActionPlan);
 
 export { IntentRouter };
