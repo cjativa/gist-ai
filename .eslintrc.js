@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ignores: ['output/'],
+    ignores: ['output/', 'dist/'],
     ecmaFeatures: {
       jsx: true,
     },
