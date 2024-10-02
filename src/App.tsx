@@ -11,6 +11,7 @@ import {
 
 import logo from './logo.svg';
 import { IntentMessage, IntentTypes } from './types';
+import { ApiService } from './services';
 
 const IntentInformationMap: {
   [key in keyof typeof IntentTypes]: {
@@ -97,8 +98,14 @@ export function Application() {
   }, []);
 
   /** Handles the on-click event from our intent buttons */
-  function onHandleIntentButtonClick(intentId: IntentTypes) {
+  async function onHandleIntentButtonClick(intentId: IntentTypes) {
     setIntentId(intentId);
+
+    // Perform the desired intent action
+    const intentResponse = await ApiService.sendIntentRequest({
+      intentTypeId: intentId,
+      intentContent,
+    });
   }
 
   /** Handles updating state with the input typed into the content text field */
@@ -107,9 +114,6 @@ export function Application() {
   ) {
     setIntentContent(event.target.value);
   }
-
-  /** Handles executing the API request to the backend for process the input content */
-  function performIntentActionRequest() {}
 
   return (
     <StyledAppContainer>
@@ -161,7 +165,7 @@ export function Application() {
             multiline
             fullWidth
             placeholder={'Enter a bit of content to perform actions on it'}
-            rows={3}
+            minRows={3}
             slotProps={{
               input: {
                 readOnly: false,
