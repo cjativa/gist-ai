@@ -40,7 +40,7 @@ const IntentInformationMap: {
 };
 
 const StyledAppContainer = styled(Box)<BoxProps>(({}) => ({
-  width: '45em',
+  minWidth: '45em',
   minHeight: '45em',
   padding: '1em',
 }));
@@ -101,6 +101,10 @@ export function Application() {
     setIntentId(message.intentTypeId);
     setIntentContent(message.content);
 
+    // When we're handling the message from the background context menu action
+    // we'll want to fire the intent action request as soon as we can
+    performIntentRequest(message.intentTypeId);
+
     return false;
   }
 
@@ -118,17 +122,7 @@ export function Application() {
   /** Handles the on-click event from our intent buttons */
   async function onHandleIntentButtonClick(intentId: IntentTypes) {
     setIntentId(intentId);
-    setIntentInProgress(true);
-
-    // Perform the desired intent action
-    const intentResponse = await ApiService.sendIntentRequest({
-      intentTypeId: intentId,
-      intentContent,
-    });
-
-    setTimeout(() => {
-      setIntentInProgress(false);
-    }, 3000);
+    performIntentRequest(intentId);
   }
 
   /** Handles updating state with the input typed into the content text field */
@@ -138,11 +132,30 @@ export function Application() {
     setIntentContent(event.target.value);
   }
 
+  /** Handles encapsulating the logic for triggering the intent request */
+  async function performIntentRequest(intentId: IntentTypes) {
+    setIntentInProgress(true);
+
+    // Perform the desired intent action
+    const intentResponse = await ApiService.sendIntentRequest({
+      intentTypeId: intentId,
+      intentContent,
+    });
+
+    setIntentInProgress(false);
+  }
+
   return (
     <StyledAppContainer>
       <div className="App">
         <StyledHeader>
-          <img src={logo} className="App-logo" alt="logo" />
+          <img
+            src={logo}
+            className="App-logo"
+            alt="logo"
+            height={256}
+            width={256}
+          />
           <Typography variant="h5" component="h1">
             Welcome to Gist AI!
           </Typography>
@@ -191,6 +204,7 @@ export function Application() {
               fullWidth
               placeholder={'Enter a bit of content to perform actions on it'}
               minRows={3}
+              maxRows={10}
               slotProps={{
                 input: {
                   readOnly: intentInProgress,
