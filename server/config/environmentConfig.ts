@@ -15,6 +15,13 @@ export const EnvironmentConfig = {
   /** Environment indicating stage for the application */
   nodeEnv: process.env.NODE_ENV!!.toUpperCase() as EnvironmentStages,
 
+  /** API credentials for accessing Open AI services */
+  openAi: {
+    projectId: process.env.OPENAI_PROJECT_ID,
+    organizationId: process.env.OPENAI_ORGANIZATION_ID,
+    apiKey: process.env.OPENAI_API_KEY,
+  },
+
   /** Configuration regarding the user sessions */
   session: {
     secret: process.env.SESSION_SECRET,
