@@ -1,12 +1,15 @@
 import express from 'express';
 
-// import {} from '../services';
+import { IntentService } from '../services';
 
 export class IntentController {
   public static async handleSummarize(
     request: express.Request,
     response: express.Response
   ) {
+    const { content } = request.body;
+    const intentResult = await IntentService.performSummarization(content);
+
     return response.status(200).json(`Generic response`);
   }
 
@@ -14,6 +17,9 @@ export class IntentController {
     request: express.Request,
     response: express.Response
   ) {
+    const { content } = request.body;
+    const intentResult = await IntentService.performExplanation(content);
+
     return response.status(200).json(`Generic response`);
   }
 
