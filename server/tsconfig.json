@@ -15,7 +15,8 @@
     "isolatedModules": true,
     "noEmit": false,
     "outDir": "../dist/server",
-    "rootDir": "./"
+    "rootDir": "./",
+    "sourceMap": true
   },
   "include": ["**/*.ts"]
 }
