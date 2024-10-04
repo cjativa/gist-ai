@@ -10,7 +10,9 @@ export class ApiService {
   /** Handles propagating an intent message with its payload to our server
    * @param - intentInformation - Input object containing the intent information to be sent to server
    */
-  public static async sendIntentRequest(intentInformation: IntentRequest) {
+  public static async sendIntentRequest(
+    intentInformation: IntentRequest
+  ): Promise<string> {
     const response = await axios({
       method: 'POST',
       baseURL: '/api/intent',
@@ -20,6 +22,6 @@ export class ApiService {
       },
     });
 
-    return response;
+    return response.data;
   }
 }
