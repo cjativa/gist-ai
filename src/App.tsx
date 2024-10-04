@@ -159,6 +159,9 @@ export function Application() {
         intentSuccess: true,
       });
     } catch (error) {
+      console.error(
+        `[Application] Encountered error performing intent request`
+      );
       setIntentResponse({
         intentContent: '',
         intentSuccess: false,
@@ -189,34 +192,29 @@ export function Application() {
         </StyledHeader>
 
         <StyledIntentContainer>
-          {/** When the intent source is the extension entrypoint itself, we'll render the input field
-           * and the button group for the end-user to make a selection of intent
-           */}
-          {intentSource === IntentSources.ExtensionEntrypoint ? (
-            <StyledIntentContainer>
-              <Typography variant="body2">
-                Choose one of the actions below
-              </Typography>
+          <StyledIntentContainer>
+            <Typography variant="body2">
+              Choose one of the actions below
+            </Typography>
 
-              {/** Render our available intent actions */}
-              <ButtonGroup variant="contained" aria-label="Gist action buttons">
-                {Object.entries(IntentInformationMap).map(
-                  ([intentId, intentItem]) => {
-                    return (
-                      <Button
-                        key={intentId}
-                        onClick={() =>
-                          onHandleIntentButtonClick(intentId as IntentTypes)
-                        }
-                      >
-                        {intentItem.actionButtonLabel}
-                      </Button>
-                    );
-                  }
-                )}
-              </ButtonGroup>
-            </StyledIntentContainer>
-          ) : null}
+            {/** Render our available intent actions */}
+            <ButtonGroup variant="contained" aria-label="Gist action buttons">
+              {Object.entries(IntentInformationMap).map(
+                ([intentId, intentItem]) => {
+                  return (
+                    <Button
+                      key={intentId}
+                      onClick={() =>
+                        onHandleIntentButtonClick(intentId as IntentTypes)
+                      }
+                    >
+                      {intentItem.actionButtonLabel}
+                    </Button>
+                  );
+                }
+              )}
+            </ButtonGroup>
+          </StyledIntentContainer>
 
           {/** Text field with the intent content. We'll show a loading animation as the request is in-progress */}
           <StyledContentContainer>

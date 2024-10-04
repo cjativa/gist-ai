@@ -15,7 +15,7 @@ export class ApiService {
   ): Promise<string> {
     const response = await axios({
       method: 'POST',
-      baseURL: '/api/intent',
+      baseURL: 'http://localhost:4004/api/intent',
       url: intentInformation.intentTypeId.toString(),
       data: {
         content: intentInformation.intentContent,
