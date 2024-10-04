@@ -1,6 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
+// @ts-expect-error ignore type definition file
+import cors from 'cors';
+
 import { ApiRouter } from './api/routes';
 import { Config } from './config';
 
@@ -12,6 +15,10 @@ const application = express();
 application.use(express.urlencoded({ extended: true }));
 application.use(bodyParser.json());
 application.use('/api', ApiRouter);
+
+// Enable CORS for all sites
+// TODO - Allow only desired sites like localhost
+application.use(cors());
 
 // Configure the server start
 application.listen(Config.port, () => {
