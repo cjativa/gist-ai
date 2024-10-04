@@ -27,7 +27,7 @@ export class IntentService {
       ],
     });
 
-    return response.choices[0];
+    return response.choices[0].message.content || '';
   }
 
   /** Method for safely retrieving our defined system-message for this specific intent
@@ -54,11 +54,13 @@ export class IntentService {
     return systemMessageText;
   }
 
-  public static async performSummarization(content: string) {
+  public static async performSummarization(content: string): Promise<string> {
     const response = await this.performIntentRequest(
       IntentTypes.summarizer,
       content
     );
+
+    return response;
   }
 
   public static async performExplanation(content: string) {

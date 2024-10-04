@@ -10,7 +10,7 @@ export class IntentController {
     const { content } = request.body;
     const intentResult = await IntentService.performSummarization(content);
 
-    return response.status(200).json(`Generic response`);
+    return response.status(200).json(intentResult);
   }
 
   public static async handleExplain(
