@@ -15,5 +15,6 @@
     "16": "gist.png",
     "48": "gist.png",
     "128": "gist.png"
-  }
+  },
+  "host_permissions": ["http://localhost:4004/*"]
 }
