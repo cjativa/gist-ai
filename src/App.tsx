@@ -7,6 +7,7 @@ import {
   Button,
   ButtonGroup,
   CircularProgress,
+  Paper,
   type BoxProps,
 } from '@mui/material';
 
@@ -42,7 +43,13 @@ const IntentInformationMap: {
 const StyledAppContainer = styled(Box)<BoxProps>(({}) => ({
   minWidth: '45em',
   minHeight: '45em',
+  backgroundColor: 'white',
   padding: '1em',
+}));
+
+const StyledAppBackground = styled(Box)<BoxProps>(({}) => ({
+  padding: '2em',
+  backgroundColor: '#96d396',
 }));
 
 const StyledHeader = styled(Box)(({}) => ({
@@ -146,77 +153,83 @@ export function Application() {
   }
 
   return (
-    <StyledAppContainer>
-      <div className="App">
-        <StyledHeader>
-          <img
-            src={logo}
-            className="App-logo"
-            alt="logo"
-            height={256}
-            width={256}
-          />
-          <Typography variant="h5" component="h1">
-            Welcome to Gist AI!
-          </Typography>
-          <Typography variant="subtitle1">
-            Your go-to tool for quick content help using Artifical Intelligence
-          </Typography>
-        </StyledHeader>
-
-        <StyledIntentContainer>
-          {/** When the intent source is the extension entrypoint itself, we'll render the input field
-           * and the button group for the end-user to make a selection of intent
-           */}
-          {intentSource === IntentSources.ExtensionEntrypoint ? (
-            <StyledIntentContainer>
-              <Typography variant="body2">
-                Choose one of the actions below
-              </Typography>
-
-              {/** Render our available intent actions */}
-              <ButtonGroup variant="contained" aria-label="Gist action buttons">
-                {Object.entries(IntentInformationMap).map(
-                  ([intentId, intentItem]) => {
-                    return (
-                      <Button
-                        key={intentId}
-                        onClick={() =>
-                          onHandleIntentButtonClick(intentId as IntentTypes)
-                        }
-                      >
-                        {intentItem.actionButtonLabel}
-                      </Button>
-                    );
-                  }
-                )}
-              </ButtonGroup>
-            </StyledIntentContainer>
-          ) : null}
-
-          {/** Text field with the intent content. We'll show a loading animation as the request is in-progress */}
-          <StyledContentContainer>
-            <TextField
-              id="outlined-read-only-input"
-              label="Content"
-              value={intentContent}
-              multiline
-              fullWidth
-              placeholder={'Enter a bit of content to perform actions on it'}
-              minRows={3}
-              maxRows={10}
-              slotProps={{
-                input: {
-                  readOnly: intentInProgress,
-                },
-              }}
-              disabled={intentInProgress}
-              onChange={onHandleContentInputChange}
+    <StyledAppBackground>
+      <StyledAppContainer>
+        <div className="App">
+          <StyledHeader>
+            <img
+              src={logo}
+              className="App-logo"
+              alt="logo"
+              height={256}
+              width={256}
             />
-            {intentInProgress && <StyledLoadingCircle />}
-          </StyledContentContainer>
-        </StyledIntentContainer>
-      </div>
-    </StyledAppContainer>
+            <Typography variant="h5" component="h1">
+              Welcome to Gist AI!
+            </Typography>
+            <Typography variant="subtitle1">
+              Your go-to tool for quick content help using Artifical
+              Intelligence
+            </Typography>
+          </StyledHeader>
+
+          <StyledIntentContainer>
+            {/** When the intent source is the extension entrypoint itself, we'll render the input field
+             * and the button group for the end-user to make a selection of intent
+             */}
+            {intentSource === IntentSources.ExtensionEntrypoint ? (
+              <StyledIntentContainer>
+                <Typography variant="body2">
+                  Choose one of the actions below
+                </Typography>
+
+                {/** Render our available intent actions */}
+                <ButtonGroup
+                  variant="contained"
+                  aria-label="Gist action buttons"
+                >
+                  {Object.entries(IntentInformationMap).map(
+                    ([intentId, intentItem]) => {
+                      return (
+                        <Button
+                          key={intentId}
+                          onClick={() =>
+                            onHandleIntentButtonClick(intentId as IntentTypes)
+                          }
+                        >
+                          {intentItem.actionButtonLabel}
+                        </Button>
+                      );
+                    }
+                  )}
+                </ButtonGroup>
+              </StyledIntentContainer>
+            ) : null}
+
+            {/** Text field with the intent content. We'll show a loading animation as the request is in-progress */}
+            <StyledContentContainer>
+              <TextField
+                id="outlined-read-only-input"
+                label="Content"
+                value={intentContent}
+                multiline
+                fullWidth
+                placeholder={'Enter a bit of content to perform actions on it'}
+                minRows={3}
+                maxRows={10}
+                slotProps={{
+                  input: {
+                    readOnly: intentInProgress,
+                  },
+                }}
+                disabled={intentInProgress}
+                onChange={onHandleContentInputChange}
+              />
+              {intentInProgress && <StyledLoadingCircle />}
+            </StyledContentContainer>
+          </StyledIntentContainer>
+        </div>
+      </StyledAppContainer>
+    </StyledAppBackground>
   );
 }
