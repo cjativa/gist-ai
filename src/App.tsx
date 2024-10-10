@@ -15,7 +15,7 @@ import {
 
 import logo from './logo.svg';
 import { IntentMessage, IntentTypes } from './types';
-import { ApiService } from './services';
+import { ApiService, StructuredIntentResponse } from './services';
 
 const IntentInformationMap: {
   [key in keyof typeof IntentTypes]: {
@@ -98,10 +98,14 @@ export function Application() {
     IntentSources.ExtensionEntrypoint
   );
   const [intentInProgress, setIntentInProgress] = React.useState(false);
-  const [intentResponse, setIntentResponse] = React.useState<{
-    intentContent: string;
-    intentSuccess: boolean;
-  } | null>(null);
+  const [intentResponse, setIntentResponse] = React.useState<
+    | {
+        intentContent: StructuredIntentResponse;
+        intentSuccess: true;
+      }
+    | { intentContent: null; intentSuccess: false }
+    | null
+  >(null);
 
   const intentInformation = intentId ? IntentInformationMap[intentId] : null;
 
@@ -163,7 +167,7 @@ export function Application() {
         `[Application] Encountered error performing intent request`
       );
       setIntentResponse({
-        intentContent: '',
+        intentContent: null,
         intentSuccess: false,
       });
     }
@@ -244,9 +248,23 @@ export function Application() {
           {intentResponse?.intentSuccess ? (
             <Card variant="outlined">
               <CardContent>
-                <Typography variant="body2">
-                  {intentResponse.intentContent}
+                <Typography variant="h5" fontWeight={'bolder'} color="#007800">
+                  {intentResponse.intentContent.title}
                 </Typography>
+                <br />
+                {intentResponse.intentContent.keyPoints.map((keyPoint) => {
+                  return (
+                    <div>
+                      <Typography variant="h6" color="#0084a9">
+                        {keyPoint.title}
+                      </Typography>
+                      <Typography variant="body2">
+                        {keyPoint.detailSentences.join(' ')}
+                      </Typography>
+                      <br />
+                    </div>
+                  );
+                })}
               </CardContent>
             </Card>
           ) : null}

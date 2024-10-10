@@ -1,1 +1,1 @@
-export { ApiService } from './apiService';
+export { ApiService, type StructuredIntentResponse } from './apiService';
