@@ -1,6 +1,5 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-
 // @ts-expect-error ignore type definition file
 import cors from 'cors';
 
