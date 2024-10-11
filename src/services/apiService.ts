@@ -6,6 +6,9 @@ type IntentRequest = {
   intentContent: string;
 };
 
+const baseUrlRoot =
+  process.env.NODE_ENV === 'LOCAL'.toLowerCase() ? '' : 'http://localhost:4004';
+
 // TODO - Consolidate with the type `StructureIntentResponse` from backend IntentService
 export type StructuredIntentResponse = {
   title: string;
@@ -24,8 +27,7 @@ export class ApiService {
   ): Promise<StructuredIntentResponse> {
     const response = await axios<StructuredIntentResponse>({
       method: 'POST',
-      baseURL: '/api/intent',
-      // baseURL: 'http://localhost:4004/api/intent',
+      baseURL: `${baseUrlRoot}/api/intent`,
       url: intentInformation.intentTypeId.toString(),
       data: {
         content: intentInformation.intentContent,

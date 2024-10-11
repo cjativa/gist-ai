@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import { ApiRouter } from './api/routes';
-import { Config } from './config';
+import { EnvironmentConfig as Config } from './config';
 
 const LOG_PREFIX = '[Application]';
 

@@ -2,13 +2,13 @@ import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
 
-import { Config } from '../../config';
+import * as Config from '../../config';
 import { INTENT_SYSTEM_MESSAGES, IntentTypes } from './intentSystemMessages';
 import { SummarizationResponse } from './intentServiceFixtureResponses';
 
 const openai = new OpenAI({
-  organization: Config.openAi.organizationId,
-  project: Config.openAi.projectId,
+  organization: Config.EnvironmentConfig.openAi.organizationId,
+  project: Config.EnvironmentConfig.openAi.projectId,
 });
 
 const LOG_PREFIX = `[IntentService]`;
@@ -98,7 +98,7 @@ export class IntentService {
   public static async performSummarization(
     content: string
   ): Promise<StructuredIntentResponse> {
-    return SummarizationResponse;
+    // return SummarizationResponse;
 
     const response = await this.performIntentRequest(
       IntentTypes.summarizer,

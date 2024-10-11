@@ -119,7 +119,7 @@ export function Application() {
 
     // When we're handling the message from the background context menu action
     // we'll want to fire the intent action request as soon as we can
-    performIntentRequest(message.intentTypeId);
+    performIntentRequest(message.intentTypeId, message.content);
 
     return false;
   }
@@ -138,7 +138,7 @@ export function Application() {
   /** Handles the on-click event from our intent buttons */
   async function onHandleIntentButtonClick(intentId: IntentTypes) {
     setIntentId(intentId);
-    performIntentRequest(intentId);
+    performIntentRequest(intentId, intentContent);
   }
 
   /** Handles updating state with the input typed into the content text field */
@@ -149,14 +149,17 @@ export function Application() {
   }
 
   /** Handles encapsulating the logic for triggering the intent request */
-  async function performIntentRequest(intentId: IntentTypes) {
+  async function performIntentRequest(
+    intentId: IntentTypes,
+    intentContentForRequest: string
+  ) {
     setIntentInProgress(true);
 
     // Perform the desired intent action
     try {
       const response = await ApiService.sendIntentRequest({
         intentTypeId: intentId,
-        intentContent,
+        intentContent: intentContentForRequest,
       });
       setIntentResponse({
         intentContent: response,
@@ -204,12 +207,15 @@ export function Application() {
             {/** Render our available intent actions */}
             <ButtonGroup variant="contained" aria-label="Gist action buttons">
               {Object.entries(IntentInformationMap).map(
-                ([intentId, intentItem]) => {
+                ([itemIntentId, intentItem]) => {
                   return (
                     <Button
-                      key={intentId}
+                      variant={
+                        itemIntentId === intentId ? 'contained' : 'outlined'
+                      }
+                      key={itemIntentId}
                       onClick={() =>
-                        onHandleIntentButtonClick(intentId as IntentTypes)
+                        onHandleIntentButtonClick(itemIntentId as IntentTypes)
                       }
                     >
                       {intentItem.actionButtonLabel}
