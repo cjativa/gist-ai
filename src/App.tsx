@@ -13,7 +13,7 @@ import {
   type BoxProps,
 } from '@mui/material';
 
-import logo from './logo.svg';
+import logo from '../public/logo512.png';
 import { IntentMessage, IntentTypes } from './types';
 import { ApiService, StructuredIntentResponse } from './services';
 
@@ -184,11 +184,12 @@ export function Application() {
       <StyledAppContainer>
         <StyledHeader>
           <img
-            src={logo}
+            src={'./logo512.png'}
             className="App-logo"
             alt="logo"
             height={256}
             width={256}
+            style={{ borderRadius: '16px', marginBottom: '1em' }}
           />
           <Typography variant="h5" component="h1">
             Welcome to Gist AI!
