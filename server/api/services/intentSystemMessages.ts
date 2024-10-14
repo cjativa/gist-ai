@@ -22,7 +22,7 @@ const SUMMARIZE_SYSTEM_MESSAGE: SystemMessageStructure = {
     },
     {
       stepContent:
-        'Identify and provide key points in the content. The key point should be straightforward but informative sentence. Prefix each key point with the text "Key Point #<INCREMENTED_NUMBER>" where the text "<INCREMENTED_NUMBER>" as a number that increases from the number 1 for each key point identified.',
+        'Identify and provide key points in the content. The key point should be straightforward but informative sentence.',
     },
     {
       stepContent: `For each key point, please provide 2-3 additional sentences that expand further on the subject of the key point. Reference the information provided in the content for the details to include in these sentences.`,
@@ -41,7 +41,7 @@ const ACTION_PLAN_SYSTEM_MESSAGE: SystemMessageStructure = {
         'Provide a title for the explanation of the content. The title should give the reader a good idea of the overall topic of the content that was provided but the title should be rather simple and use an analogy when possible.',
     },
     {
-      stepContent: `Identify and provide key points in the content. The key point should be straightforward but informative sentence. Prefix each key point with the text "Key Point #<INCREMENTED_NUMBER>" where the text "<INCREMENTED_NUMBER>" as a number that increases from the number 1 for each key point identified. Use an analogy when it makes sense in the key point, but do not use it too much`,
+      stepContent: `Identify and provide key points in the content. The key point should be straightforward but informative sentence. Use an analogy when it makes sense in the key point, but do not use it too much`,
     },
     {
       stepContent: `For each key point, please provide 1-2 sentences that expand further on the subject of the key point. Reference the information provided in the content for the details to include in these sentences. The sentences you generate should use more simpler day-to-day terms in the explanation, much like explaining it to a middle schooler`,
@@ -60,7 +60,7 @@ const REPHRASE_SYSTEM_MESSAGE: SystemMessageStructure = {
         'Provide a title for the explanation of the content. The title should give the reader a good idea of the overall topic of the content that was provided but the title should be rather simple and use an analogy when possible.',
     },
     {
-      stepContent: `Identify and provide key points in the content. The key point should be straightforward but informative sentence. Prefix each key point with the text "Key Point #<INCREMENTED_NUMBER>" where the text "<INCREMENTED_NUMBER>" as a number that increases from the number 1 for each key point identified. Use an analogy when it makes sense in the key point, but do not use it too much`,
+      stepContent: `Identify and provide key points in the content. The key point should be straightforward but informative sentence. Use an analogy when it makes sense in the key point, but do not use it too much`,
     },
     {
       stepContent: `For each key point, please provide 1-2 sentences that expand further on the subject of the key point. Reference the information provided in the content for the details to include in these sentences. The sentences you generate should use more simpler day-to-day terms in the explanation, much like explaining it to a middle schooler`,
@@ -79,9 +79,7 @@ const EXPLAIN_SYSTEM_MESSAGE: SystemMessageStructure = {
         'Provide a title for the explanation of the content. The title should give the reader a good idea of the overall topic of the content that was provided but the title should be rather simple and use an analogy when possible.',
     },
     {
-      stepContent: `Identify the key points in the content. The key point should be straightforward but informative title. Use an analogy when it makes sense in the key point title, but do not use it too much.
-      
-      Prefix each key point with the text "Key Point" with the number that key point is, beginning from the number 0.`,
+      stepContent: `Identify the key points in the content. The key point should be straightforward but informative title. Use an analogy when it makes sense in the key point title, but do not use it too much.`,
     },
     {
       stepContent: `For each key point, please provide 1-2 sentences that explain the subject of the key point in simpler more day-to-day common terms. The sentences you generate should be much like explaining it to a middle schooler. 
